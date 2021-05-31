@@ -12,20 +12,23 @@ Dependencies:
 Usage:
     > python3 azure_oauth.py
     Login via the following auth url: https://example.com
-    Paste the response URL here: > https://response.example.com?abc=123
+    Paste the code query parameter here: 123
     { ...creds here }
 """
 
 from pprint import pprint
+import os
 import urllib.parse as urlparse
 
 import msal
 
 SCOPES = ["https://graph.microsoft.com/.default"]
 
-CLIENT_ID = "abc123"
-CLIENT_SECRET = "bcd234"
-TENANT_ID = "https://login.microsoftonline.com/abc123"
+CLIENT_ID = os.environ.get("CLIENT_ID", "<client_id>")
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET", "<client_secret>")
+TENANT_ID = os.environ.get(
+        "TENANT_ID", https://login.microsoftonline.com/<tenant_id>"
+    )
 
 client = msal.ConfidentialClientApplication(
         client_id=CLIENT_ID,
@@ -36,7 +39,7 @@ auth_url = client.get_authorization_request_url(scopes=SCOPES)
 
 print(f"Login via the following auth url: {auth_url}")
 
-response_url = input("Paste the response URL here: > ")
+response_url = input("Paste the code query parameter here: > ")
 parsed_url = urlparse.urlparse(response_url)
 code = urlparse.parse_qs(parsed_url.query).get('code')
 
